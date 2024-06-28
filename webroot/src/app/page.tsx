@@ -1,28 +1,80 @@
-import Image from "next/image";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Database } from "@/lib/database.types";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";  
 import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
+	const supabase = createServerComponentClient<Database>({ cookies });
+	const { data: musics, error } = await supabase.from("music").select("*");
+	console.log("aaa");
+	console.log( musics );
+	console.log( error );
 	return (
 		<main className="flex min-h-screen flex-col items-center p-24">
-			<h1>9tune --クリエイターとミュージシャンとをつなぐプラットフォーム--</h1>
-			<ul>
-				<li>9tuneは、動画クリエイターがYoutubeで使う楽曲を選ぶプラットフォームです。</li>
-				<li>動画クリエイター、ミュージシャンとが共栄する健全な枠組みを目指します。</li>
-			</ul>
-			<h2>はじめかた</h2>
-			<ul>
-				<li>アカウント登録を一週間は体験版が利用できます。</li>
-				<li>動画に使いたい音楽を見つけたら、クリエイター登録をすることで利用できます。</li>
-				<li>ミュージシャンの方は、ミュージシャン登録をする必要があります。</li>
-			</ul>
-			<h2>価格</h2>
-			<ul>
-				<li>月額3000円で、共用楽曲は使いたい放題です。</li>
-			</ul>
-			<h2>リンク</h2>
-			<ul>
-				<li><Link href="./legal-notice">特定商取引法に関する表記</Link></li>
-			</ul>
+			<div className="w-full max-w-3xl mx-auto my-16 px-2">
+			<Table>
+				<TableCaption>A list of your recent invoices.</TableCaption>
+				<TableHeader>
+					<TableRow>
+						<TableHead className="w-[100px]">Invoice</TableHead>
+						<TableHead>Status</TableHead>
+						<TableHead>Method</TableHead>
+						<TableHead className="text-right">Amount</TableHead>
+					</TableRow>
+				</TableHeader>
+				<TableBody>
+					<TableRow>
+						<TableCell className="font-medium">INV001</TableCell>
+						<TableCell>Paid</TableCell>
+						<TableCell>Credit Card</TableCell>
+						<TableCell className="text-right">$250.00</TableCell>
+					</TableRow>
+					<TableRow>
+						<TableCell className="font-medium">INV001</TableCell>
+						<TableCell>Paid</TableCell>
+						<TableCell>Credit Card</TableCell>
+						<TableCell className="text-right">$250.00</TableCell>
+					</TableRow>
+					<TableRow>
+						<TableCell className="font-medium">INV001</TableCell>
+						<TableCell>Paid</TableCell>
+						<TableCell>Credit Card</TableCell>
+						<TableCell className="text-right">$250.00</TableCell>
+					</TableRow>
+					<TableRow>
+						<TableCell className="font-medium">INV001</TableCell>
+						<TableCell>Paid</TableCell>
+						<TableCell>Credit Card</TableCell>
+						<TableCell className="text-right">$250.00</TableCell>
+					</TableRow>
+					<TableRow>
+						<TableCell className="font-medium">INV001</TableCell>
+						<TableCell>Paid</TableCell>
+						<TableCell>Credit Card</TableCell>
+						<TableCell className="text-right">$250.00</TableCell>
+					</TableRow>
+				</TableBody>
+			</Table>
+
+				{musics?.map((music)=>(
+					<Link href={`/${music.id}`} key={music.id}>
+						<Card className="my-2">
+							<CardHeader>
+								<CardTitle>{music.title}</CardTitle>
+								<CardDescription>{music.description}</CardDescription>
+							</CardHeader>
+							<CardContent>
+								<p>Card Content</p>
+							</CardContent>
+							<CardFooter>
+								<p>Card Footer</p>
+							</CardFooter>
+						</Card>
+					</Link>
+				))}
+			</div>
 		</main>
 	);
 }
