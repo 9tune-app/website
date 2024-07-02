@@ -1,13 +1,12 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-//import { Database } from "@/lib/database.types";
+import { Database } from "@/lib/database.types";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";  
 import Link from "next/link";
 
 export default async function Home() {
-	const supabase = createServerComponentClient({ cookies });
-//	const supabase = createServerComponentClient<Database>({ cookies });
+	const supabase = createServerComponentClient<Database>({ cookies });
 	const { data: musics, error } = await supabase.from("music").select("*");
 	console.log("aaa");
 	console.log( musics );
